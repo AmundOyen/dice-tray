@@ -8,8 +8,8 @@ export type RollerStatus = 'idle' | 'loading' | 'ready' | 'fallback';
 const INIT_TIMEOUT_MS = 20_000;
 const ROLL_TIMEOUT_MS = 30_000;
 
-/** Dice colour: a warm ivory that reads well on the green felt. */
-const DICE_COLOR = '#efe4c8';
+/** Dice colour: a muted sage green, light enough to stand out from the darker felt. */
+const DICE_COLOR = '#bccfb4';
 
 /**
  * Rolls dice in the 3D tray from @3d-dice/dice-box, and falls back to the
