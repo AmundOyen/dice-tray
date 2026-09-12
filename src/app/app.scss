@@ -1,0 +1,260 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.toolbar {
+  gap: 8px;
+  background: var(--mat-sys-surface-container);
+}
+
+.title {
+  font: var(--mat-sys-title-large);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.content {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: grid;
+  gap: 24px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font: var(--mat-sys-title-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.dice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 12px;
+}
+
+.roll-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.modifier {
+  display: flex;
+  align-items: center;
+}
+
+.modifier-field {
+  width: 110px;
+
+  input {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+  }
+}
+
+.roll-button {
+  flex: 1 1 220px;
+  min-height: 56px;
+  font: var(--mat-sys-title-medium);
+
+  &.rolling mat-icon {
+    animation: shake 400ms ease-in-out;
+  }
+}
+
+.result-card {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--mat-sys-surface-container);
+  animation: pop 250ms ease-out;
+
+  &.rolling {
+    opacity: 0.5;
+  }
+}
+
+.result-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.result-formula {
+  font: var(--mat-sys-title-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.result-total {
+  font: var(--mat-sys-display-medium);
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.groups {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.group {
+  display: grid;
+  grid-template-columns: 5.5em 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.group-label {
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.rolls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.roll {
+  min-width: 2.2em;
+  padding: 4px 6px;
+  border-radius: 8px;
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+  font: var(--mat-sys-title-medium);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  box-sizing: border-box;
+
+  &.max {
+    background: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+    font-weight: 700;
+  }
+
+  &.min {
+    background: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+}
+
+.group-subtotal {
+  font: var(--mat-sys-title-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.result-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.empty {
+  margin: 0;
+  padding: 24px 16px;
+  border-radius: 16px;
+  border: 1px dashed var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .section-title {
+    margin-bottom: 0;
+  }
+}
+
+.history-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 4px 6px 12px;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.history-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-formula {
+  font: var(--mat-sys-body-large);
+}
+
+.history-detail {
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-total {
+  font: var(--mat-sys-title-large);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-25deg) scale(1.2);
+  }
+  75% {
+    transform: rotate(25deg) scale(1.2);
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.97);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-button.rolling mat-icon,
+  .result-card {
+    animation: none;
+  }
+}
