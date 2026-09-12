@@ -1,0 +1,158 @@
+<mat-toolbar class="toolbar">
+  <mat-icon aria-hidden="true">casino</mat-icon>
+  <span class="title">Dice Tray</span>
+  <span class="spacer"></span>
+  <button
+    mat-icon-button
+    type="button"
+    aria-label="Clear selected dice"
+    matTooltip="Clear selection"
+    [disabled]="diceCount() === 0 && modifier() === 0"
+    (click)="clearSelection()"
+  >
+    <mat-icon>backspace</mat-icon>
+  </button>
+</mat-toolbar>
+
+<main class="content">
+  <section class="tray" aria-labelledby="pick-heading">
+    <h2 id="pick-heading" class="section-title">Pick your dice</h2>
+    <div class="dice-grid">
+      @for (die of dieTypes; track die) {
+        <app-die-selector [die]="die" [count]="pool()[die]" (countChange)="setCount(die, $event)" />
+      }
+    </div>
+
+    <div class="roll-bar">
+      <div class="modifier">
+        <button
+          mat-icon-button
+          type="button"
+          aria-label="Decrease modifier"
+          (click)="nudgeModifier(-1)"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="modifier-field">
+          <mat-label>Modifier</mat-label>
+          <input
+            matInput
+            type="number"
+            inputmode="numeric"
+            min="-999"
+            max="999"
+            [ngModel]="modifier()"
+            (ngModelChange)="setModifier($event)"
+          />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          type="button"
+          aria-label="Increase modifier"
+          (click)="nudgeModifier(1)"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+
+      <button
+        mat-flat-button
+        type="button"
+        class="roll-button"
+        [class.rolling]="rolling()"
+        [disabled]="!canRoll()"
+        (click)="roll()"
+      >
+        <mat-icon>casino</mat-icon>
+        @if (diceCount() === 0) {
+          Select dice to roll
+        } @else {
+          Roll {{ formula() }}
+        }
+      </button>
+    </div>
+  </section>
+
+  <section class="result" aria-live="polite" aria-labelledby="result-heading">
+    <h2 id="result-heading" class="section-title">Result</h2>
+    @if (latest(); as result) {
+      <article class="result-card" [class.rolling]="rolling()">
+        <header class="result-header">
+          <span class="result-formula">{{ formatResult(result) }}</span>
+          <span class="result-total">{{ result.total }}</span>
+        </header>
+        <div class="groups">
+          @for (group of result.groups; track group.die) {
+            <div class="group">
+              <span class="group-label">{{ group.rolls.length }}{{ group.die }}</span>
+              <span class="rolls">
+                @for (value of group.rolls; track $index) {
+                  <span
+                    class="roll"
+                    [class.max]="isMax(group.die, value)"
+                    [class.min]="isMin(value)"
+                  >
+                    {{ value }}
+                  </span>
+                }
+              </span>
+              <span class="group-subtotal">= {{ group.subtotal }}</span>
+            </div>
+          }
+          @if (result.modifier !== 0) {
+            <div class="group">
+              <span class="group-label">Modifier</span>
+              <span class="rolls"></span>
+              <span class="group-subtotal">{{ result.modifier > 0 ? '+' : '' }}{{ result.modifier }}</span>
+            </div>
+          }
+        </div>
+        <footer class="result-actions">
+          <button mat-stroked-button type="button" [disabled]="rolling()" (click)="reroll(result)">
+            <mat-icon>replay</mat-icon>
+            Roll again
+          </button>
+        </footer>
+      </article>
+    } @else {
+      <p class="empty">Tap a die to add it to the tray, then press roll.</p>
+    }
+  </section>
+
+  @if (previous().length > 0) {
+    <section class="history" aria-labelledby="history-heading">
+      <div class="history-header">
+        <h2 id="history-heading" class="section-title">History</h2>
+        <button mat-button type="button" (click)="clearHistory()">
+          <mat-icon>delete_sweep</mat-icon>
+          Clear
+        </button>
+      </div>
+      <ul class="history-list">
+        @for (entry of previous(); track entry.id) {
+          <li class="history-item">
+            <div class="history-text">
+              <span class="history-formula">{{ formatResult(entry) }}</span>
+              <span class="history-detail">
+                @for (group of entry.groups; track group.die; let last = $last) {
+                  {{ group.rolls.join(', ') }}{{ last ? '' : ' | ' }}
+                }
+              </span>
+            </div>
+            <span class="history-total">{{ entry.total }}</span>
+            <button
+              mat-icon-button
+              type="button"
+              aria-label="Roll again"
+              matTooltip="Roll again"
+              [disabled]="rolling()"
+              (click)="reroll(entry)"
+            >
+              <mat-icon>replay</mat-icon>
+            </button>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</main>

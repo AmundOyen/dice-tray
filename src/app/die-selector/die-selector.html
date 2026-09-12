@@ -1,0 +1,65 @@
+<button
+  type="button"
+  class="die"
+  [attr.aria-label]="'Add one ' + die()"
+  [disabled]="atMax()"
+  (click)="increment()"
+>
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    @switch (die()) {
+      @case ('d4') {
+        <polygon points="50,6 96,88 4,88" />
+      }
+      @case ('d6') {
+        <rect x="12" y="12" width="76" height="76" rx="10" />
+      }
+      @case ('d8') {
+        <polygon points="50,4 94,50 50,96 6,50" />
+      }
+      @case ('d10') {
+        <polygon points="50,4 92,38 78,92 22,92 8,38" />
+      }
+      @case ('d12') {
+        <polygon points="50,4 84,18 96,52 78,90 22,90 4,52 16,18" />
+      }
+      @case ('d20') {
+        <polygon points="50,4 90,27 90,73 50,96 10,73 10,27" />
+      }
+      @default {
+        <circle cx="50" cy="50" r="44" />
+      }
+    }
+  </svg>
+  <span class="label">{{ die() }}</span>
+</button>
+
+<div class="controls">
+  <button
+    mat-icon-button
+    type="button"
+    [attr.aria-label]="'Remove one ' + die()"
+    [disabled]="count() === 0"
+    (click)="decrement()"
+  >
+    <mat-icon>remove</mat-icon>
+  </button>
+  <button
+    type="button"
+    class="count"
+    [attr.aria-label]="count() + ' ' + die() + ' selected. Click to clear.'"
+    matTooltip="Clear"
+    [matTooltipDisabled]="count() === 0"
+    (click)="clear()"
+  >
+    {{ count() }}
+  </button>
+  <button
+    mat-icon-button
+    type="button"
+    [attr.aria-label]="'Add one ' + die()"
+    [disabled]="atMax()"
+    (click)="increment()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
