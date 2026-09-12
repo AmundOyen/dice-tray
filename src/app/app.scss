@@ -1,12 +1,14 @@
 :host {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  height: 100dvh;
 }
 
 .toolbar {
+  flex: 0 0 auto;
   gap: 8px;
-  background: var(--mat-sys-surface-container);
+  background: light-dark(#1f6b3a, #143523);
+  color: #fff;
 }
 
 .title {
@@ -17,13 +19,10 @@
   flex: 1;
 }
 
-.content {
-  width: min(100%, 960px);
-  margin: 0 auto;
-  padding: 16px;
-  box-sizing: border-box;
-  display: grid;
-  gap: 24px;
+.shell {
+  flex: 1;
+  min-height: 0;
+  background: transparent;
 }
 
 .section-title {
@@ -32,23 +31,41 @@
   color: var(--mat-sys-on-surface-variant);
 }
 
+// Sidenav: dice picker ------------------------------------------------------
+
+.picker {
+  width: min(320px, 88vw);
+  border-right: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+}
+
+.picker-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .section-title {
+    margin: 0;
+  }
+}
+
 .dice-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   gap: 12px;
 }
 
-.roll-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-}
-
 .modifier {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .modifier-field {
@@ -69,13 +86,77 @@
 }
 
 .roll-button {
-  flex: 1 1 220px;
   min-height: 56px;
   font: var(--mat-sys-title-medium);
 
   &.rolling mat-icon {
-    animation: shake 400ms ease-in-out;
+    animation: shake 400ms ease-in-out infinite;
   }
+}
+
+// Main stage: felt tray, result, history -------------------------------------
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.tray-section {
+  flex: 0 0 auto;
+}
+
+.tray {
+  position: relative;
+  height: clamp(300px, 55vh, 640px);
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.14), transparent 65%),
+    radial-gradient(ellipse at 50% 50%, #2f8a4f 0%, #237040 55%, #17532e 100%);
+  box-shadow:
+    inset 0 0 0 10px #4a2f1b,
+    inset 0 0 40px rgba(0, 0, 0, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.tray-status,
+.tray-hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 48px);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font: var(--mat-sys-body-medium);
+  text-align: center;
+  pointer-events: none;
+}
+
+.tray-status {
+  top: 24px;
+  flex-direction: column;
+  min-width: 220px;
+
+  mat-progress-bar {
+    width: 100%;
+  }
+}
+
+.tray-status--fallback {
+  flex-direction: row;
+}
+
+.tray-hint {
+  bottom: 24px;
+  margin: 0;
 }
 
 .result-card {

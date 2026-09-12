@@ -42,3 +42,6 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Copied by @3d-dice/dice-box postinstall; the build reads these from node_modules instead
+/public/assets/dice-box

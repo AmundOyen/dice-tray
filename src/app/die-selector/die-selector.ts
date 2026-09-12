@@ -19,20 +19,23 @@ import { DIE_SIDES, DieType, MAX_DICE_PER_TYPE } from '../dice';
 export class DieSelector {
   readonly die = input.required<DieType>();
   readonly count = input.required<number>();
-  readonly countChange = output<number>();
+  /** Emits +1 or -1 when the user adds or removes a die. */
+  readonly adjust = output<number>();
+  /** Emits when the user taps the count to remove every die of this type. */
+  readonly cleared = output<void>();
 
   protected readonly sides = computed(() => DIE_SIDES[this.die()]);
   protected readonly atMax = computed(() => this.count() >= MAX_DICE_PER_TYPE);
 
   protected increment(): void {
-    if (!this.atMax()) this.countChange.emit(this.count() + 1);
+    if (!this.atMax()) this.adjust.emit(1);
   }
 
   protected decrement(): void {
-    if (this.count() > 0) this.countChange.emit(this.count() - 1);
+    if (this.count() > 0) this.adjust.emit(-1);
   }
 
   protected clear(): void {
-    if (this.count() > 0) this.countChange.emit(0);
+    if (this.count() > 0) this.cleared.emit();
   }
 }
