@@ -10,6 +10,8 @@ browser's local storage, so they survive a reload.
 
 ## Development
 
+Requires Node.js 22.22.3 or newer (24 recommended).
+
 ```sh
 npm install
 npm start        # dev server at http://localhost:4200
